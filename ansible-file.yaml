@@ -1,0 +1,36 @@
+---
+- hosts: localhost
+  become: true
+  name: Install Jenkins, Docker, and Java on master server
+  tasks:
+    - name: Execute Jenkins setup script on master
+      script: ./jenkins.sh
+      register: jenkins_result
+
+    - name: Display Jenkins script output
+      debug:
+        var: jenkins_result.stdout
+
+- hosts: test
+  become: true
+  name: Install Docker and Java on test server
+  tasks:
+    - name: Execute Docker setup script on test server
+      script: ./docker.sh
+      register: docker_test_result
+
+    - name: Display Docker script output on test server
+      debug:
+        var: docker_test_result.stdout
+
+- hosts: prod
+  become: true
+  name: Install Docker and Java on prod server
+  tasks:
+    - name: Execute Docker setup script on prod server
+      script: ./docker.sh
+      register: docker_prod_result
+
+    - name: Display Docker script output on prod server
+      debug:
+        var: docker_prod_result.stdout
